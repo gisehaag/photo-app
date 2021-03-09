@@ -14,56 +14,81 @@ $(document).ready(function () {
 });
 
 
-const apiKey = '2f56450a';
-const movie = 'tt3896198';
-const year = '2020';
+class PhotoGallery {
+	constructor() {
+		this.appBox = document.querySelector('.app-box');
+		// this.callAPI();
+		this.getTopics();
+		this.getGallery();
+	}
 
-// const url = `http://www.omdbapi.com/?i=${movie}&apikey=${apiKey}`;
-// const url = `http://www.omdbapi.com/?y=${year}&apikey=${apiKey}`
-// const url = `http://www.omdbapi.com/?y=2018&apikey=${apiKey}`
+	getTopics() {
+		this.callAPI('topics', this.displayTopics.bind(this));
+		// this.topicList =
+	}
 
-const url = `http://www.omdbapi.com/?t=harry&y=2018&apikey=${apiKey}`;
+	getGallery() {
+		this.callAPI('gallery', this.displayGallery.bind(this));
+	}
 
-fetch(url)
-	.then(response => response.json())
-	.then(data => {
-		// if (data.cod == '404') {
-		// 	this.displayErrorMessage(data.message);
-		// 	return;
-		// }
-		console.log(data);
-	})
-	.catch(e => {
-		console.error(e);
-	});
+	displayTopics(data) {
+		const topicList = data;
+		this.list = this.appBox.querySelector('.topic-list');
+
+		for (let key in topicList) {
+			// console.log(topicList[key].title);
+			this.list.innerHTML += `<div><a href="#" >${topicList[key].title}</a></div>`
+		}
+	}
+
+	displayGallery(data) {
+		const gallery = data;
+		this.gallery = this.appBox.querySelector('.gallery');
+
+		for (let key in gallery) {
+			this.gallery.innerHTML += `
+				<div class="gallery-item">
+					<img
+						class="gallery-image"
+						src="${gallery[key].urls.regular}"
+						alt="${gallery[key].alt_description}"
+					/>
+					<div class="author-data info-gallery">
+						<img
+							class="author-image"
+							src="${gallery[key].user.profile_image.small}"
+							alt="${gallery[key].first_name}"
+						/>
+						<span class="author-name">${gallery[key].user.name}</span>
+					</div>
+				</div>
+			`
+		}
+	}
+
+	callAPI(endpoint, callback) {
+		const myFetch = `./endpoints/${endpoint}.php`
+		fetch(myFetch)
+			.then(response =>
+				// if (data.cod == '404') {
+				// 	this.displayErrorMessage(data.message);
+				// 	return;
+				// }
+				response.json()
+			).then((data) => {
+				// console.log(data);
+				callback(data);
+			})
+
+			.catch(e => {
+				console.error(e);
+			});
+	}
+}
+
+const app = new PhotoGallery();
 
 
-const poster = `http://img.omdbapi.com/?apikey=${apiKey}&i=${movie}`;
-const posterBox = document.querySelector('.poster');
-
-let dataAPI = {};
-
-const miPHP = './get-API-info.php'
-fetch(miPHP)
-	// .then(response => response.json())
-	.then(response =>
-		// if (data.cod == '404') {
-		// 	this.displayErrorMessage(data.message);
-		// 	return;
-		// }
-		response.json()
-	).then((data) => {
-		console.log(data);
-		dataAPI = data;
-		// posterBox.innerHTML += `<img src="${data.urls.regular}" alt="" width=600>`;
-	})
-
-	.catch(e => {
-		console.error(e);
-	});
-
-
-// "This product uses the TMDb API but is not endorsed or certified by TMDb."
 
 
 
