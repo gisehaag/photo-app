@@ -18,7 +18,7 @@ body {
 	border-bottom: 4px #aaaabc solid;
 }
 
-.list {
+.topic-list {
 	display: flex;
 	position: relative;
 	overflow: auto;
@@ -27,7 +27,7 @@ body {
 	padding: 0;
 }
 
-.list div {
+.topic-list div {
 	list-style: none;
 	margin: 0;
 	padding: 5px 20px;
@@ -35,46 +35,41 @@ body {
 	font-weight: 300;
 	color: #454555;
 	line-height: 2em;
+	white-space: nowrap;
 }
 
-.list div:hover {
+.topic-list div:hover {
 	background-color: rgba(170, 170, 188, 0.3);
 	font-weight: 500;
 	color: #f8f8ff;
 }
 
-.list::-webkit-scrollbar {
+.topic-list div a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.topic-list::-webkit-scrollbar {
 	height: 3px;
 }
 
-.list::-webkit-scrollbar-track-piece {
+.topic-list::-webkit-scrollbar-track-piece {
 	background-color: #aaaabc;
 	width: 30px;
 }
 
-.list::-webkit-scrollbar-thumb {
+.topic-list::-webkit-scrollbar-thumb {
 	background-color: #454555;
 	border-radius: 3px;
 }
 
-.list::-webkit-scrollbar-thumb:hover {
+.topic-list::-webkit-scrollbar-thumb:hover {
 	background: #b000;
 	box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 
-.list::-webkit-scrollbar-thumb:active {
+.topic-list::-webkit-scrollbar-thumb:active {
 	background-color: #999999;
-}
-
-.list .active.center {
-	box-shadow: 0 0 0 rgba(0, 0, 0, 1);
-}
-
-.list .owl-nav {
-	top: 0;
-	position: absolute;
-	transform: translate(0%, -50%);
-	right: 0;
 }
 
 .gallery {
