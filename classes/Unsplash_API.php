@@ -1,9 +1,8 @@
 <?php
 
 class Unsplash_API {
-
-	public $client_id;
-	public $base_url;
+	private $client_id;
+	private $base_url;
 
 	function __construct() {
 		$this->client_id = 'rwZ7P33T4NDZTlXDps5LuvCa-ePEjz89ZCHGZT14Esk';
@@ -48,23 +47,3 @@ class Unsplash_API {
 		return $response;
 	}
 }
-
-
-// $data = array(
-// 	'status' 	=> 200,
-// 	'response' 	=> array(
-// 		'title' 	=> 'avengers',
-// 		'year'	=> 2012,
-// 		)
-// 	);
-
-// $endpoint = 'photos/';
-// $endpoint = 'search/photos/';
-// $endpoint = '/collections';
-// $endpoint = '/photos/random';
-
-// para buscar una foto random
-// https://api.unsplash.com/photos/random?client_id=rwZ7P33T4NDZTlXDps5LuvCa-ePEjz89ZCHGZT14Esk
-
-// para buscar por *username*
-// https://api.unsplash.com/users/*jerry_318*?client_id=rwZ7P33T4NDZTlXDps5LuvCa-ePEjz89ZCHGZT14Esk
