@@ -2,18 +2,20 @@
 
 require('../classes/Unsplash_API.php');
 $unsplash = new Unsplash_API();
+$query = json_decode($_POST['query'], true);
 
-if( !isset($_POST['parameter']) || empty(trim($_POST['parameter']))) {
+if( !isset($query['query']) || empty(trim($query['query']))) {
 	http_response_code(400);
 	die();
 }
 
-$query = $_POST['parameter'];
+$default_query = array(
+	'per_page'		=> 8,
+);
 
-$search = $unsplash->fetch('/search/photos', array(
-	'per_page' 	=> 8,
-	'query'		=> $query,
-));
+$merged_query = array_merge( $default_query, $query);
+
+$search = $unsplash->fetch('/search/photos', $merged_query);
 
 echo $search;
 

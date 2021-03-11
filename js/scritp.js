@@ -1,19 +1,35 @@
+$(".gallery").owlCarousel({
+	center: true,
+	items: 2,
+	loop: true,
+	margin: 0,
+	dots: false,
+	// responsive:{
+	// 	 600:{
+	// 		  items:4
+	// 	 }
+	// }
+});
+
+
 class PhotoGallery {
 	constructor() {
 		this.appBox = document.querySelector('.app-box');
 		// this.callAPI();
-		this.getTopics();
-		this.getGallery();
+		// this.getTopics();
+		// this.getSlider();
+
 		this.assingElements();
 		this.addEvents();
+
 	}
 
-	getTopics() {
-		this.callAPI('topics', this.displayTopics.bind(this));
-	}
+	// getTopics() {
+	// 	this.callAPI('topics', this.displayTopics.bind(this));
+	// }
 
-	getGallery() {
-		this.callAPI('gallery', this.displayGallery.bind(this));
+	getSlider() {
+		this.callAPI('gallery', this.displaySlider.bind(this));
 	}
 
 	assingElements() {
@@ -28,14 +44,25 @@ class PhotoGallery {
 		this.moreResults.addEventListener('click', this.getSearch.bind(this));
 	}
 
-	getSearch(e) {
+	getSearch(e, count) {
 		e.preventDefault();
-		this.callAPI('search', this.displaySearchResults.bind(this), new FormData(this.formSearch));
+		const formData = new FormData();
+
+		formData.append('query', JSON.stringify({
+			'per_page': count,
+			'page': 4,
+			'query': this.input.value,
+		}));
+
+		this.callAPI('search', this.displayGrid.bind(this), formData);
 	}
 
-	displaySearchResults(data) {
+	displayGrid(data) {
+		console.log(data);
 		const photos = data.results;
 		const photoGrid = this.appBox.querySelector('.photo-grid');
+
+		photoGrid.innerHTML = `<h1>more images like that</h1>`
 
 		for (let key in photos) {
 			// console.log(photos[key]);
@@ -62,17 +89,17 @@ class PhotoGallery {
 
 	}
 
-	displayTopics(data) {
-		const topicList = data;
-		const list = this.appBox.querySelector('.topic-list');
+	// displayTopics(data) {
+	// 	const topicList = data;
+	// 	const list = this.appBox.querySelector('.topic-list');
 
-		for (let key in topicList) {
-			// console.log(topicList[key].title);
-			list.innerHTML += `<div><a href="#" >${topicList[key].title}</a></div>`
-		}
-	}
+	// 	for (let key in topicList) {
+	// 		// console.log(topicList[key].title);
+	// 		list.innerHTML += `<div><a href="#" >${topicList[key].title}</a></div>`
+	// 	}
+	// }
 
-	displayGallery(data) {
+	displaySlider(data) {
 		const galleryData = data;
 		const gallery = this.appBox.querySelector('.gallery');
 
@@ -98,22 +125,11 @@ class PhotoGallery {
 			`
 		}
 
-		$(".gallery").owlCarousel({
-			center: true,
-			items: 2,
-			loop: true,
-			margin: 0,
-			dots: false,
-			// responsive:{
-			// 	 600:{
-			// 		  items:4
-			// 	 }
-			// }
-		});
+
 
 	}
 
-	callAPI(endpoint, callback, data = {}) {
+	callAPI(endpoint, callback, data = {}, callbackData = {}) {
 		const requestsOptions = {
 			method: "POST",
 			body: data,
@@ -129,7 +145,7 @@ class PhotoGallery {
 				return response.json();
 			})
 			.then((data) => {
-				callback(data)
+				callback(data, callbackData)
 			})
 			.catch(e => {
 				console.error(e);
