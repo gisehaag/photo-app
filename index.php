@@ -1,3 +1,5 @@
+<?php require('./functions.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -28,9 +30,11 @@
 		</header>
 		<div class="app-box">
 			<div class="menu">
-				<div class="topic-list"></div>
+				<div class="topic-list"><?php show_topics(); ?></div>
 			</div>
-			<div class="gallery owl-carousel owl-theme"></div>
+			<div class="gallery owl-carousel owl-theme">
+				<?php show_slider(); ?>
+			</div>
 			<div class="search-box">
 				<form action="">
 					<label for="parameter"
@@ -40,7 +44,7 @@
 				</form>
 			</div>
 			<div class="photo-grid">
-				<h1>more images like that</h1>
+				<?php show_grid(); ?>
 			</div>
 			<input type="submit" value="load more photos" id="more-results" />
 		</div>
