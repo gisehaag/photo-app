@@ -1,135 +1,94 @@
-$(".gallery").owlCarousel({
-	center: true,
-	items: 2,
-	loop: true,
-	margin: 0,
-	dots: false,
-	// responsive:{
-	// 	 600:{
-	// 		  items:4
-	// 	 }
-	// }
-});
-
+$(function () {
+	$(".gallery").owlCarousel({
+		center: true,
+		items: 2,
+		loop: true,
+		margin: 0,
+		dots: false,
+		// responsive:{
+		// 	 600:{
+		// 		  items:4
+		// 	 }
+		// }
+	});
+})
 
 class PhotoGallery {
 	constructor() {
 		this.appBox = document.querySelector('.app-box');
-		// this.callAPI();
-		// this.getTopics();
-		// this.getSlider();
-
-		this.assingElements();
 		this.addEvents();
-
-	}
-
-	// getTopics() {
-	// 	this.callAPI('topics', this.displayTopics.bind(this));
-	// }
-
-	getSlider() {
-		this.callAPI('gallery', this.displaySlider.bind(this));
-	}
-
-	assingElements() {
-		this.formSearch = this.appBox.querySelector('form');
-		this.input = this.appBox.querySelector('#input');
-		this.input.focus();
-		this.moreResults = this.appBox.querySelector('#more-results');
 	}
 
 	addEvents() {
-		this.formSearch.addEventListener('submit', this.getSearch.bind(this));
-		this.moreResults.addEventListener('click', this.getSearch.bind(this));
+		const formSearch = this.appBox.querySelector('#search-form');
+		const moreResults = this.appBox.querySelector('#more-results');
+
+		formSearch.addEventListener('submit', this.getSearch.bind(this));
+		moreResults.addEventListener('click', this.getSearch.bind(this));
 	}
 
-	getSearch(e, count) {
+	getSearch(e) {
 		e.preventDefault();
-		const formData = new FormData();
+		const input = this.appBox.querySelector('#input');
+		const photoGrid = this.appBox.querySelector('.photo-grid');
 
-		formData.append('query', JSON.stringify({
-			'per_page': count,
-			'page': 4,
-			'query': this.input.value,
-		}));
+		let query = {};
+		let pageNumber = this.pageNumber || 1;
+
+		switch (e.srcElement.id) {
+			case 'more-results':
+				query = {
+					'per_page': 9,
+					'page': ++pageNumber,
+					'query': photoGrid.dataset.query,
+					'orientation': photoGrid.dataset.orientation,
+					// 'color': photoGrid.dataset.color,
+					'order_by': photoGrid.dataset.orderBy,
+				}
+				this.insertType = 'append';
+				break;
+
+			case 'search-form':
+				pageNumber = 1;
+				query = {
+					'per_page': 8,
+					'page': pageNumber,
+					'query': input.value,
+					'orientation': photoGrid.dataset.orientation,
+					// 'color': photoGrid.dataset.color,
+					'order_by': photoGrid.dataset.orderBy,
+				}
+				this.insertType = 'innerHTML';
+				photoGrid.dataset.query = input.value;
+				break;
+		}
+
+		this.pageNumber = pageNumber;
+		this.setFetch(query);
+	}
+
+	setFetch(query) {
+		const formData = new FormData();
+		formData.append('query', JSON.stringify(query));
 
 		this.callAPI('search', this.displayGrid.bind(this), formData);
 	}
 
-	displayGrid(data) {
-		console.log(data);
-		const photos = data.results;
+
+	displayGrid(photos) {
 		const photoGrid = this.appBox.querySelector('.photo-grid');
+		switch (this.insertType) {
+			case 'append':
+				photoGrid.innerHTML += `${photos}`;
+				break;
 
-		photoGrid.innerHTML = `<h1>more images like that</h1>`
-
-		for (let key in photos) {
-			// console.log(photos[key]);
-			photoGrid.innerHTML += `
-			<div class="image">
-					<img
-						src="${photos[key].urls.small}"
-						alt="${photos[key].alt_description}"
-					/>
-					<span class="caption">${photos[key].alt_description}</span>
-					<div class="author-data">
-						<a href="">
-							<img
-								class="author-image"
-								src="${photos[key].user.profile_image.small}"
-								alt="${photos[key].user.name}"
-							/>
-						</a>
-						<span class="author-name">${photos[key].user.name}</span>
-					</div>
-				</div>
-			`
+			case 'innerHTML':
+				photoGrid.innerHTML = `<h1>those are the results</h1>${photos}`;
+				break;
 		}
-
 	}
 
-	// displayTopics(data) {
-	// 	const topicList = data;
-	// 	const list = this.appBox.querySelector('.topic-list');
-
-	// 	for (let key in topicList) {
-	// 		// console.log(topicList[key].title);
-	// 		list.innerHTML += `<div><a href="#" >${topicList[key].title}</a></div>`
-	// 	}
-	// }
-
-	displaySlider(data) {
-		const galleryData = data;
-		const gallery = this.appBox.querySelector('.gallery');
-
-		for (let key in galleryData) {
-			// console.log(galleryData[key]);
-
-			gallery.innerHTML += `
-				<div class="galleryData-item">
-					<img
-						class="galleryData-image"
-						src="${galleryData[key].urls.regular}"
-						alt="${galleryData[key].alt_description}"
-					/>
-					<div class="author-data info-gallery">
-						<img
-							class="author-image"
-							src="${galleryData[key].user.profile_image.small}"
-							alt="${galleryData[key].user.name}"
-						/>
-						<span class="author-name">${galleryData[key].user.name}</span>
-					</div>
-				</div>
-			`
-		}
-
-
-
-	}
-
-	callAPI(endpoint, callback, data = {}, callbackData = {}) {
+	callAPI(endpoint, callback, data = {}) {
 		const requestsOptions = {
 			method: "POST",
 			body: data,
@@ -142,10 +101,14 @@ class PhotoGallery {
 					throw response.statusText;
 					// this.displayErrorMessage(response.statusText);
 				}
-				return response.json();
+				// console.log(response.text());
+				return response.text();
+				// return console.log(response);
 			})
+			// .then(response => response.json())
 			.then((data) => {
-				callback(data, callbackData)
+				// console.log(data);
+				callback(data);
 			})
 			.catch(e => {
 				console.error(e);
