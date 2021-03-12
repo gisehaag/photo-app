@@ -201,7 +201,7 @@ body {
 	font-size: 0.8rem;
 }
 
-input[type='submit'],
+#more-results,
 .search-box input[type='submit'] {
 	background-color: #8aa1ff;
 	font-family: 'Livvic', sans-serif;
