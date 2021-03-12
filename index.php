@@ -36,17 +36,23 @@
 				<?php show_slider(); ?>
 			</div>
 			<div class="search-box">
-				<form action="">
+				<form action="" id="search-form">
 					<label for="parameter"
 						><input type="text" name="parameter" id="input" placeholder="look for any pic toy want"
 					/></label>
 					<input type="submit" value="go fot it!" id="search" />
 				</form>
 			</div>
-			<div class="photo-grid">
+			<div
+				class="photo-grid"
+				data-color="<?php echo $unsplash->defaults['color']; ?>"
+				data-orientation="<?php echo $unsplash->defaults['orientation']; ?>"
+				data-query="<?php echo $unsplash->defaults['query']; ?>"
+				data-order-by="<?php echo $unsplash->defaults['order_by']; ?>"
+			>
 				<?php show_grid(); ?>
 			</div>
-			<input type="submit" value="load more photos" id="more-results" />
+			<button id="more-results">load more photos</button>
 		</div>
 
 		<script

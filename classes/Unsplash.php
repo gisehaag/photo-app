@@ -6,14 +6,32 @@ class Unsplash {
 	public $topic;
 	public $daily_topic;
 	public $slider;
+	public $defaults;
 
 	function __construct() {
 		$this->unsplash_api = new Unsplash_API();
 		//todo: guardar los json de las consultas un determinado tiempo en local
 		// $this->get_stored_data();
+		$this->set_defaults();
 		$this->fetch_topics();
 		$this->fetch_slider();
 		$this->fetch_grid();
+	}
+
+	private function set_defaults() {
+
+		// todo: dinamic query
+		$colors = array('black', 'white', 'yellow', 'orange', 'red', 'purple', 'magenta', 'green', 'teal', 'blue');
+		$orientations = array('landscape', 'portrait', 'squarish');
+		$order = array('relevant', 'latest');
+		$query = array('cactus', 'woman', 'milkyway', 'universe', 'blue sky', 'kitten', 'street', 'tuscany', 'landscape', 'london')
+
+		$this->defaults = array(
+			'color'			=> 'black',
+			'orientation' 	=> 'squarish',
+			'query'			=> 'photography',
+			'order_by'		=> 'relevant'
+		);
 	}
 
 	public function get_stored_data() {
@@ -71,12 +89,12 @@ class Unsplash {
 		}
 
 		$grid = $this->unsplash_api->fetch('/search/photos', array(
-			'query'			=> 'photography',
 			'page'			=> 1,
 			'per_page'		=>	9,
-			'order_by'		=> 'lastest', //por default 'relevant'
-			'color'			=> 'purple', //black_and_white, black, white, yellow, orange, red, purple, magenta, green, teal, blue
-			'orientation' 	=> 'squarish' //landscape, portrait, squarish
+			'query'			=> $this->defaults['query'],
+			'order_by'		=> $this->defaults['order_by'],
+			'color'			=> $this->defaults['color'],
+			'orientation' 	=> $this->defaults['orientation'],
 		));
 
 		$this->grid = json_decode($grid)->results;
