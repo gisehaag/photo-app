@@ -24,13 +24,13 @@ class Unsplash {
 		$colors = array('black', 'white', 'yellow', 'orange', 'red', 'purple', 'magenta', 'green', 'teal', 'blue');
 		$orientations = array('landscape', 'portrait', 'squarish');
 		$order = array('relevant', 'latest');
-		$query = array('cactus', 'woman', 'milkyway', 'universe', 'blue sky', 'kitten', 'street', 'tuscany', 'landscape', 'london')
+		$query = array('cactus', 'woman', 'milkyway', 'universe', 'blue sky', 'kitten', 'street', 'tuscany', 'landscape', 'london');
 
 		$this->defaults = array(
 			'color'			=> 'black',
 			'orientation' 	=> 'squarish',
 			'query'			=> 'photography',
-			'order_by'		=> 'relevant'
+			'order_by'		=> 'relevant',
 		);
 	}
 
