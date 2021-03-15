@@ -11,7 +11,6 @@ if( !isset($query['query']) || empty(trim($query['query']))) {
 
 $default_query = array(
 	'per_page'		=> 8,
-	'order_by'		=> 'lastest',
 );
 
 $merged_query = array_merge( $default_query, $query);
