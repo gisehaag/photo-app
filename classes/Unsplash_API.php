@@ -1,16 +1,18 @@
 <?php
+$dir = dirname( dirname(__FILE__) );
+require($dir.'/api-connect-data.php');
 
 class Unsplash_API {
 	private $client_id;
 	private $base_url;
 
 	function __construct() {
-		$this->client_id = 'rwZ7P33T4NDZTlXDps5LuvCa-ePEjz89ZCHGZT14Esk';
+		global $client_id;
+		$this->client_id = $client_id;
 		$this->base_url = 'https://api.unsplash.com';
 	}
 
 	public function fetch($endpoint, $params = [])	{
-
 		if (!isset($endpoint)) {
 			return false;
 		}
