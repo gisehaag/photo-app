@@ -52,7 +52,7 @@
 			>
 				<?php show_grid(); ?>
 			</div>
-			<button id="more-results">load more photos</button>
+			<button id="more-results">loading more photos</button>
 		</div>
 
 		<script

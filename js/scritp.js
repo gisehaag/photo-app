@@ -21,10 +21,45 @@ class PhotoGallery {
 
 	addEvents() {
 		const formSearch = this.appBox.querySelector('#search-form');
-		const moreResults = this.appBox.querySelector('#more-results');
-
 		formSearch.addEventListener('submit', this.getSearch.bind(this));
-		moreResults.addEventListener('click', this.getSearch.bind(this));
+		this.observeLoadMore();
+	}
+
+	observeLoadMore() {
+		const moreResults = this.appBox.querySelector('#more-results');
+		let options = {
+			// root: this.appBox, //ver porqué esto nunca funcionó
+			threshold: 1,
+		}
+
+		let observer = new IntersectionObserver((entries) => {
+			const entry = entries[0];
+			let isVisible = entry.intersectionRatio >= options.threshold;
+
+			if (isVisible) {
+				this.infiniteScroll();
+			}
+		}, options);
+
+		observer.observe(moreResults);
+	}
+
+	infiniteScroll() {
+		let query = {};
+		let pageNumber = this.pageNumber || 1;
+		const photoGrid = this.appBox.querySelector('.photo-grid');
+
+		query = {
+			'per_page': 9,
+			'page': ++pageNumber,
+			'query': photoGrid.dataset.query,
+			'orientation': photoGrid.dataset.orientation,
+			// 'color': photoGrid.dataset.color,
+			'order_by': photoGrid.dataset.orderBy,
+		}
+		this.insertType = 'append';
+		this.pageNumber = pageNumber;
+		this.setFetch(query);
 	}
 
 	getSearch(e) {
@@ -35,35 +70,19 @@ class PhotoGallery {
 		let query = {};
 		let pageNumber = this.pageNumber || 1;
 
-		switch (e.srcElement.id) {
-			case 'more-results':
-				query = {
-					'per_page': 9,
-					'page': ++pageNumber,
-					'query': photoGrid.dataset.query,
-					'orientation': photoGrid.dataset.orientation,
-					// 'color': photoGrid.dataset.color,
-					'order_by': photoGrid.dataset.orderBy,
-				}
-				this.insertType = 'append';
-				break;
-
-			case 'search-form':
-				pageNumber = 1;
-				query = {
-					'per_page': 8,
-					'page': pageNumber,
-					'query': input.value,
-					'orientation': photoGrid.dataset.orientation,
-					// 'color': photoGrid.dataset.color,
-					'order_by': photoGrid.dataset.orderBy,
-				}
-				this.insertType = 'innerHTML';
-				photoGrid.dataset.query = input.value;
-				break;
+		pageNumber = 1;
+		query = {
+			'per_page': 8,
+			'page': pageNumber,
+			'query': input.value,
+			'orientation': photoGrid.dataset.orientation,
+			// 'color': photoGrid.dataset.color,
+			'order_by': photoGrid.dataset.orderBy,
 		}
-
+		this.insertType = 'innerHTML';
+		photoGrid.dataset.query = input.value;
 		this.pageNumber = pageNumber;
+
 		this.setFetch(query);
 	}
 
