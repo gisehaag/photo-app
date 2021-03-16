@@ -140,18 +140,29 @@ class PhotoGallery {
 	}
 
 
-	displayGrid(photos) {
+	displayGrid(data) {
 		const photoGrid = this.appBox.querySelector('.photo-grid');
+		const moreResults = this.appBox.querySelector('#more-results');
+
+		if (!data.found) {
+			moreResults.style.display = 'none';
+			photoGrid.classList.add('not-found');
+		} else {
+			moreResults.style.display = 'block';
+			photoGrid.classList.remove('not-found');
+		}
+
 		switch (this.insertType) {
 			case 'append':
-				photoGrid.innerHTML += `${photos}`;
+				photoGrid.innerHTML += data.html;
 				break;
 
 			case 'innerHTML':
-				photoGrid.innerHTML = `<h1>those are the results</h1>${photos}`;
+				photoGrid.innerHTML = data.html;
 				break;
 		}
 	}
+
 
 	callAPI(endpoint, callback, data = {}) {
 		const requestsOptions = {
@@ -166,13 +177,10 @@ class PhotoGallery {
 					throw response.statusText;
 					// this.displayErrorMessage(response.statusText);
 				}
-				// console.log(response.text());
-				return response.text();
-				// return console.log(response);
+				return response.json();
 			})
 			// .then(response => response.json())
 			.then((data) => {
-				// console.log(data);
 				callback(data);
 			})
 			.catch(e => {
