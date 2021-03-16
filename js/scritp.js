@@ -5,11 +5,14 @@ $(function () {
 		loop: true,
 		margin: 0,
 		dots: false,
-		// responsive:{
-		// 	 600:{
-		// 		  items:4
-		// 	 }
-		// }
+		responsive: {
+			0: {
+				items: 1
+			},
+			600: {
+				items: 2
+			},
+		}
 	});
 })
 
