@@ -39,14 +39,12 @@ class PhotoGallery {
 		const photo = e.target;
 		const modalBox = document.querySelector('.modal');
 
-		modalBox.style.display = 'block';
+		modalBox.style.display = 'grid';
 		modalBox.innerHTML = `
 			<div class="modal-bg"></div>
 			<div class="modal-container">
-				<a href="#" id="closebutton"><span class="icon-close"></span></a>
-				<div>
-					<img id="image-modal" src="${photo.src}" alt="${photo.alt}" />
-				</div>
+				<a href="#" class="icon-close" id="closebutton"></a>
+				<img id="image-modal" src="${photo.src}" alt="${photo.alt}" />
 			</div>
 		`;
 
