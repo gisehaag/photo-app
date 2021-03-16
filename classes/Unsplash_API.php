@@ -46,6 +46,22 @@ class Unsplash_API {
 		$response = curl_exec($curl);
 
 		curl_close($curl);
-		return $response;
+
+		try {
+			$decode_response = json_decode($response);
+
+			if (is_null($decode_response)) {
+			  throw ($response);
+			}
+		 } catch (Exception $e) {
+			return json_decode(
+				"{
+					'error': true,
+					'message': 'Caught exception: {$e->getMessage()}'
+				}"
+			);
+		 }
+
+		return $decode_response;
 	}
 }

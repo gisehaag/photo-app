@@ -43,10 +43,6 @@ class Unsplash {
 		// despues asigna el contenido a la variable en cuestion: topics, slider, etc.
 	}
 
-	public function fetch($endpoint, $params = []) {
-		$this->unsplash_api->fetch($endpoint, $params);
-	}
-
 	public function fetch_topics(){
 		if(isset($this->topics) ){
 			return $this->topics;
@@ -56,10 +52,10 @@ class Unsplash {
 			'per_page' => 30,
 		));
 
-		$this->topics =json_decode($topics);
-		$this->set_daily_topic();
-
-		return $this->topics;
+		if(! isset($topics['error'])) {
+			$this->topics = $topics;
+			$this->set_daily_topic();
+		}
 	}
 
 	function set_daily_topic() {
@@ -79,8 +75,9 @@ class Unsplash {
 			'order_by'    => 'popular',
 		));
 
-		$this->slider = json_decode($slider);
-		return $this->slider;
+		if(! isset($slider['error'])) {
+			$this->slider = $slider;
+		}
 	}
 
 	public function fetch_grid() {
@@ -97,7 +94,8 @@ class Unsplash {
 			'orientation' 	=> $this->defaults['orientation'],
 		));
 
-		$this->grid = json_decode($grid)->results;
-		return $this->grid;
+		if(! isset($grid->error)) {
+			$this->grid = $grid->results;
+		}
 	}
 }
