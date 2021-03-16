@@ -7,6 +7,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+		<link rel="stylesheet" href="https://test.gisehaag.com/assets/css/icons.css" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
@@ -24,10 +25,11 @@
 	</head>
 	<body>
 		<header>
-			<div>
-				<h1>Photo Gallery</h1>
-			</div>
+			<h1>Photo Gallery</h1>
 		</header>
+
+		<div class="modal"></div>
+
 		<div class="app-box">
 			<div class="menu">
 				<div class="topic-list"><?php show_topics(); ?></div>

@@ -24,7 +24,7 @@ function show_slider() {
 	foreach ($slider as $item) : ?>
 		<div class="galleryData-item">
 			<img
-				class="galleryData-image"
+				class="galleryData-image photo"
 				src="<?php echo $item->urls->regular; ?>"
 				alt="<?php echo $item->alt_description; ?>"
 			/>
@@ -48,8 +48,9 @@ function show_grid() {
 	// creo que usando el data stored podría ser una manera de resolverlo
 
 	foreach ($grid as $item) : ?>
-		<div class="image">
+		<div class="grid-item-box">
 				<img
+					class="photo"
 					src="<?php echo $item->urls->small; ?>"
 					alt="<?php echo $item->alt_description; ?>"
 				/>

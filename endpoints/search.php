@@ -18,8 +18,9 @@ $search = $unsplash->fetch('/search/photos', $merged_query);
 $results = json_decode($search)->results;
 
 foreach ($results as $item) : ?>
-	<div class="image">
+	<div class="grid-item-box">
 		<img
+			class="photo"
 			src="<?php echo $item->urls->small; ?>"
 			alt="<?php echo $item->alt_description; ?>"
 		/>

@@ -24,8 +24,51 @@ class PhotoGallery {
 
 	addEvents() {
 		const formSearch = this.appBox.querySelector('#search-form');
+		const photos = this.appBox.querySelectorAll('.photo');
+
 		formSearch.addEventListener('submit', this.getSearch.bind(this));
+		this.appBox.addEventListener('click', this.doBiggerImage.bind(this));
 		this.observeLoadMore();
+	}
+
+	doBiggerImage(e) {
+		if (!e.target.matches('.photo')) {
+			return;
+		}
+
+		const photo = e.target;
+		const modalBox = document.querySelector('.modal');
+
+		modalBox.style.display = 'block';
+		modalBox.innerHTML = `
+			<div class="modal-bg"></div>
+			<div class="modal-container">
+				<a href="#" id="closebutton"><span class="icon-close"></span></a>
+				<div>
+					<img id="image-modal" src="${photo.src}" alt="${photo.alt}" />
+				</div>
+			</div>
+		`;
+
+		this.closeModal(modalBox);
+	}
+
+	closeModal(modalBox) {
+		const closeButton = modalBox.querySelectorAll('#closebutton, .modal-bg');
+
+		closeButton.forEach((button) => {
+			button.addEventListener('click', e => {
+				e.preventDefault();
+				modalBox.style.display = 'none';
+			});
+		});
+
+		window.addEventListener('keydown', e => {
+			if (e.key == 'Escape') {
+				modalBox.style.display = 'none';
+			}
+		});
+
 	}
 
 	observeLoadMore() {
