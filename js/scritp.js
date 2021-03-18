@@ -24,11 +24,18 @@ class PhotoGallery {
 
 	addEvents() {
 		const formSearch = this.appBox.querySelector('#search-form');
-		const photos = this.appBox.querySelectorAll('.photo');
+		const topics = this.appBox.querySelectorAll('.topic');
+		const authorsData = this.appBox.querySelectorAll('.author-data');
 
 		formSearch.addEventListener('submit', this.getSearch.bind(this));
 		this.appBox.addEventListener('click', this.doBiggerImage.bind(this));
+		this.appBox.addEventListener('click', this.getUserProfile.bind(this));
+
 		this.observeLoadMore();
+
+		topics.forEach(topic => {
+			topic.addEventListener('click', this.getSearch.bind(this));
+		})
 	}
 
 	doBiggerImage(e) {
@@ -91,7 +98,7 @@ class PhotoGallery {
 	infiniteScroll() {
 		let query = {};
 		let pageNumber = this.pageNumber || 1;
-		const photoGrid = this.appBox.querySelector('.photo-grid');
+		const photoGrid = this.appBox.querySelector('#photo-grid');
 
 		query = {
 			'per_page': 9,
@@ -103,14 +110,14 @@ class PhotoGallery {
 		}
 		this.insertType = 'append';
 		this.pageNumber = pageNumber;
-		this.setFetch(query);
+		this.setFetch('/search', query);
 	}
 
 	getSearch(e) {
 		e.preventDefault();
 		const input = this.appBox.querySelector('#input');
-		const photoGrid = this.appBox.querySelector('.photo-grid');
-
+		const photoGrid = this.appBox.querySelector('#photo-grid');
+		const topic = e.currentTarget.dataset.slug;
 		let query = {};
 		let pageNumber = this.pageNumber || 1;
 
@@ -118,28 +125,57 @@ class PhotoGallery {
 		query = {
 			'per_page': 8,
 			'page': pageNumber,
-			'query': input.value,
 			'orientation': photoGrid.dataset.orientation,
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
 		this.insertType = 'innerHTML';
-		photoGrid.dataset.query = input.value;
 		this.pageNumber = pageNumber;
 
-		this.setFetch(query);
+		if (topic) {
+			query.id_or_slug = topic;
+			photoGrid.dataset.query = topic;
+			this.setFetch(`/topics/${topic}`, query);
+		} else {
+			query.query = input.value;
+			photoGrid.dataset.query = input.value;
+			this.setFetch('/search', query);
+		}
 	}
 
-	setFetch(query) {
+	getUserProfile(e) {
+		if (!e.target.matches('[class^=author-]')) {
+			return;
+		}
+
+		let username = e.target.dataset.username;
+		if (!username) {
+			username = e.target.parentNode.dataset.username;
+		}
+
+		window.location.href = `users.php?username=${username}`;
+
+		// const formData = new FormData();
+		// formData.append('username', `/${username}`);
+
+		// this.callAPI('/users', this.displayUserPage.bind(this), formData);
+	}
+
+	setFetch(endpoint, query) {
 		const formData = new FormData();
+		formData.append('endpoint', endpoint)
 		formData.append('query', JSON.stringify(query));
 
 		this.callAPI('search', this.displayGrid.bind(this), formData);
 	}
 
+	displayUserPage(data) {
+		const userGridBox = this.appBox.querySelector('#user-container');
+		userGridBox.innerHTML = data.html;
+	}
 
 	displayGrid(data) {
-		const photoGrid = this.appBox.querySelector('.photo-grid');
+		const photoGrid = this.appBox.querySelector('#photo-grid');
 		const moreResults = this.appBox.querySelector('#more-results');
 
 		if (!data.found) {

@@ -3,8 +3,12 @@
 require('../classes/Unsplash_API.php');
 $unsplash = new Unsplash_API();
 $query = json_decode($_POST['query'], true);
+$endpoint = $_POST['endpoint'];
 
-if (!isset($query['query']) || empty(trim($query['query']))) {
+$havent_endpoint =  (!isset($endpoint) or empty(trim($endpoint)));
+$havent_query = (!isset($query['query']) or empty(trim($query['query'])));
+
+if ( $havent_query && $havent_endpoint ) {
 	http_response_code(400);
 	die();
 }
@@ -13,10 +17,18 @@ $default_query = array(
 	'per_page'		=> 8,
 );
 
-$merged_query = array_merge($default_query, $query);
-$search = $unsplash->fetch('/search/photos', $merged_query);
 
-$results = $search->results;
+$merged_query = array_merge($default_query, $query);
+$search = $unsplash->fetch($endpoint . '/photos', $merged_query);
+
+$search_string = json_encode($search);
+
+if( isset($search->results) ) {
+	$results = $search->results;
+} else {
+	$results = $search;
+}
+
 $found = true;
 $text = "";
 
@@ -42,10 +54,8 @@ function display_results($results)
 		<div class="grid-item-box">
 			<img class="photo" src="<?php echo $item->urls->small; ?>" alt="<?php echo $item->alt_description; ?>" />
 			<span class="caption"><?php echo $item->alt_description; ?></span>
-			<div class="author-data">
-				<a href="">
-					<img class="author-image" src="<?php echo $item->user->profile_image->small; ?>" alt="<?php echo $item->user->name; ?>" />
-				</a>
+			<div class="author-data" data-username="<?php echo $item->user->username; ?>">
+				<img class="author-image small" src="<?php echo $item->user->profile_image->small; ?>" alt="<?php echo $item->user->name; ?>" />
 				<span class="author-name"><?php echo $item->user->name; ?></span>
 			</div>
 		</div>

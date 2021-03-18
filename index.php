@@ -37,6 +37,7 @@
 			<div class="gallery owl-carousel owl-theme">
 				<?php show_slider(); ?>
 			</div>
+
 			<div class="search-box">
 				<form action="" id="search-form">
 					<label for="parameter"
@@ -51,6 +52,7 @@
 				data-orientation="<?php echo $unsplash->defaults['orientation']; ?>"
 				data-query="<?php echo $unsplash->defaults['query']; ?>"
 				data-order-by="<?php echo $unsplash->defaults['order_by']; ?>"
+				id="photo-grid"
 			>
 				<?php show_grid(); ?>
 			</div>
