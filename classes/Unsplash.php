@@ -7,6 +7,8 @@ class Unsplash {
 	public $daily_topic;
 	public $slider;
 	public $defaults;
+	public $user_info;
+	public $user_photos;
 
 	function __construct() {
 		$this->unsplash_api = new Unsplash_API();
@@ -16,6 +18,9 @@ class Unsplash {
 		$this->fetch_topics();
 		$this->fetch_slider();
 		$this->fetch_grid();
+		if(isset($_GET['username'])) {
+			$this->fetch_user();
+		}
 	}
 
 	private function set_defaults() {
@@ -98,4 +103,18 @@ class Unsplash {
 			$this->grid = $grid->results;
 		}
 	}
+
+	public function fetch_user() {
+		$username = '/' . $_GET['username'];
+
+		$user_info = $this->unsplash_api->fetch('/users' . $username);
+		$user_photos = $this->unsplash_api->fetch('/users' . $username . '/photos', array(
+			'per_page'		=> 100,
+		));
+
+		$this->user_info = $user_info;
+		$this->user_photos = $user_photos;
+
+	}
 }
+

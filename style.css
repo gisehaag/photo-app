@@ -12,8 +12,13 @@ body {
 	color: #454555;
 }
 
-.menu {
-	padding: 60px 0 30px;
+header h1 {
+	margin: 10px 0;
+}
+
+.menu,
+.user-container {
+	padding: 30px 0;
 	background: linear-gradient(#fff, #aaaabc);
 	border-bottom: 4px #aaaabc solid;
 }
@@ -108,10 +113,6 @@ body {
 	position: absolute;
 }
 
-.author-image {
-	width: 30px;
-}
-
 .owl-item {
 	opacity: 0.6;
 	filter: saturate(0.3);
@@ -156,6 +157,7 @@ body {
 	border: 1px solid #aaaabc;
 	padding: 5px;
 	padding-bottom: 35px;
+	background-color: #fff;
 }
 
 .caption {
@@ -180,10 +182,46 @@ body {
 }
 
 .author-image {
-	width: 35px !important;
+	width: 150px;
 	border-radius: 50%;
 	border: 1px solid #454555;
 	margin: 5px;
+}
+
+.user-container .author-image {
+	margin-left: 40px;
+}
+
+.user-container .author-data {
+	cursor: auto;
+	justify-content: flex-start;
+	width: 80%;
+	margin: 0 auto;
+	border-bottom: 2px solid rgb(190, 190, 190);
+	box-shadow: 0px 5px 25px 15px rgb(190 190 190 / 60%);
+	min-height: 270px;
+}
+
+.user-container a {
+	text-decoration: none;
+	color: #454555;
+}
+
+.author-info {
+	text-align: left;
+	padding: 15px;
+	padding-left: 30px;
+	font-size: 0.85rem;
+}
+
+.author-info .icon {
+	padding-right: 10px;
+	color: #999999;
+	font-size: 1rem;
+}
+
+.small {
+	width: 35px !important;
 }
 
 .photo-grid img {
@@ -220,6 +258,10 @@ body {
 	border: 0 solid transparent;
 	cursor: pointer;
 	padding: 5px 30px;
+}
+
+#more-results {
+	margin: 0 auto;
 }
 
 .modal {
