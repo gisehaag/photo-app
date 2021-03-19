@@ -19,7 +19,7 @@ $default_query = array(
 
 
 $merged_query = array_merge($default_query, $query);
-$search = $unsplash->fetch($endpoint . '/photos', $merged_query);
+$search = $unsplash->get($endpoint . '/photos', $merged_query);
 
 $search_string = json_encode($search);
 
@@ -30,17 +30,19 @@ if( isset($search->results) ) {
 }
 
 $found = true;
+$title = "";
 $text = "";
 
 switch (count($results)) {
 	case 0:
 		$found = false;
-		$text = "<h1>Sorry, I don't found any results</h1>";
+		$title = "<h1>Sorry, I don't found any results</h1>";
 		break;
 	case 8:
 		$text = "<h1>those are the results</h1>" . display_results($results);
 		break;
-	case 9:
+	default:
+		$title = "<p class=\"left-align title\">Here's the resuls for <span class=\"color-text\"> {$query['query']} </span>search</p>";
 		$text = display_results($results);
 		break;
 }
@@ -66,5 +68,6 @@ function display_results($results)
 
 echo json_encode(array(
 	'found' 	=> $found,
-	'html' 	=> $text
+	'title'  => $title,
+	'html' 	=> $text,
 ));
