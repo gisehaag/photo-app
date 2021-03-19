@@ -18,8 +18,13 @@ class Unsplash {
 		$this->fetch_topics();
 		$this->fetch_slider();
 		$this->fetch_grid();
+
 		if(isset($_GET['username'])) {
 			$this->fetch_user();
+		}
+
+		if(isset($_GET['query'])) {
+			$this->fetch_query();
 		}
 	}
 
@@ -32,9 +37,9 @@ class Unsplash {
 		$query = array('cactus', 'woman', 'milkyway', 'universe', 'blue sky', 'kitten', 'street', 'tuscany', 'landscape', 'london');
 
 		$this->defaults = array(
-			'color'			=> 'black',
-			'orientation' 	=> 'squarish',
-			'query'			=> 'photography',
+			'color'			=> 'blue',
+			'orientation' 	=> 'landscape',
+			'query'			=> 'milkyway',
 			'order_by'		=> 'relevant',
 		);
 	}
@@ -53,7 +58,7 @@ class Unsplash {
 			return $this->topics;
 		}
 
-		$topics = $this->unsplash_api->fetch('/topics', array(
+		$topics = $this->unsplash_api->get('/topics', array(
 			'per_page' => 30,
 		));
 
@@ -73,7 +78,7 @@ class Unsplash {
 			return $this->slider;
 		}
 
-		$slider = $this->unsplash_api->fetch("/topics/$this->daily_topic/photos", array(
+		$slider = $this->unsplash_api->get("/topics/$this->daily_topic/photos", array(
 			'id_or_slug'  => $this->daily_topic,
 			'orientation' => 'landscape',
 			'per_page'    => 3,
@@ -90,7 +95,7 @@ class Unsplash {
 			return $this->grid;
 		}
 
-		$grid = $this->unsplash_api->fetch('/search/photos', array(
+		$grid = $this->unsplash_api->get('/search/photos', array(
 			'page'			=> 1,
 			'per_page'		=>	9,
 			'query'			=> $this->defaults['query'],
@@ -107,13 +112,14 @@ class Unsplash {
 	public function fetch_user() {
 		$username = '/' . $_GET['username'];
 
-		$user_info = $this->unsplash_api->fetch('/users' . $username);
-		$user_photos = $this->unsplash_api->fetch('/users' . $username . '/photos', array(
+		$user_info = $this->unsplash_api->get('/users' . $username);
+		$user_photos = $this->unsplash_api->get('/users' . $username . '/photos', array(
 			'per_page'		=> 100,
 		));
 
 		$this->user_info = $user_info;
 		$this->user_photos = $user_photos;
+	}
 
 	public function fetch_query() {
 		$results_photos = $this->unsplash_api->get('/search/photos', $_GET);

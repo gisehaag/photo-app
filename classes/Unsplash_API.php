@@ -4,22 +4,19 @@ require($dir.'/api-connect-data.php');
 
 class Unsplash_API {
 	private $client_id;
-	private $base_url;
+	private $api_base_url;
 
 	function __construct() {
-		global $client_id;
+		global $client_id, $dir;
 		$this->client_id = $client_id;
-		$this->base_url = 'https://api.unsplash.com';
+		$this->api_base_url = 'https://api.unsplash.com';
+		$this->base_path = $dir;
 	}
 
-	public function fetch($endpoint, $params = [])	{
-		if (!isset($endpoint)) {
-			return false;
-		}
-
+	private function fetch($endpoint, $params = [])	{
 		$default_params = array(
 			'client_id' 	=> $this->client_id,
-			'per_page'		=> 10,
+			'per_page'		=> 21,
 		);
 
 		$curl_params = http_build_query( array_merge( $default_params, $params));
@@ -27,7 +24,7 @@ class Unsplash_API {
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => $this->base_url . $endpoint . '?' . $curl_params,
+			CURLOPT_URL => $this->api_base_url . $endpoint . '?' . $curl_params,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -62,6 +59,23 @@ class Unsplash_API {
 			);
 		 }
 
+		file_put_contents($this->base_path . '/data/' . str_replace('/','-',$endpoint) . '.json', json_encode($decode_response));
 		return $decode_response;
+	}
+
+	public function get($endpoint, $params = [])	{
+		if (!isset($endpoint)) {
+			return false;
+		}
+
+		$file = $this->base_path . '/data/' . str_replace('/','-',$endpoint) . '.json';
+
+
+		if( file_exists($file) ) {
+			return json_decode(file_get_contents($file));
+		}
+
+		//Si llegue a este punto
+		return $this->fetch($endpoint, $params);
 	}
 }
