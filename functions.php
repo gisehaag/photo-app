@@ -118,3 +118,50 @@ function show_profile() {
 		<?php endforeach; ?>
 	</div> <?php
 }
+
+function show_results() {
+	global $unsplash;
+	$results_photos = $unsplash->results_photos;
+
+	if(isset($unsplash->query['order_by']) ) {
+		$order = $unsplash->query['order_by'];
+	}
+
+	if(isset($unsplash->query['orientation'])) {
+		$orientation = $unsplash->query['orientation'];
+	}
+
+	$query = $unsplash->query['query'];
+
+	$total = $results_photos->total;
+	$total_pages = $results_photos->total_pages;
+	$photos = $results_photos->results; ?>
+
+	<p class="left-align title">Here's the resuls for <span class="color-text"><?php echo $query; ?> </span>search</p>
+  	<h1 class="left-align title"><?php echo $total; ?> photos found...</h1>
+	<div class="photo-grid user-grid-box"
+
+		<?php if(isset($unsplash->query['order_by']) ) : ?>
+			data-order-by="<?php echo $order; ?>"
+		<?php endif;  ?>
+
+		data-color=""
+
+		<?php if(isset($unsplash->query['orientation']) ) : ?>
+			data-orientation="<?php echo$orientation; ?>"
+		<?php endif;  ?>
+
+		data-query="<?php echo $query; ?>" id="photo-grid">
+
+		<?php foreach ($photos as $item) : ?>
+			<div class="grid-item-box">
+				<img class="photo" src="<?php echo $item->urls->small; ?>" alt="<?php echo $item->alt_description; ?>" />
+				<span class="caption"><?php echo $item->alt_description; ?></span>
+				<div class="author-data" data-username="<?php echo $item->user->username; ?>">
+					<img class="author-image small" src="<?php echo $item->user->profile_image->small; ?>" alt="<?php echo $item->user->name; ?>" />
+					<span class="author-name"><?php echo $item->user->name; ?></span>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div> <?php
+}

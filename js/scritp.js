@@ -19,6 +19,7 @@ $(function () {
 class PhotoGallery {
 	constructor() {
 		this.appBox = document.querySelector('.app-box');
+		this.BASE_URL = window.location.origin;
 		this.addEvents();
 	}
 
@@ -26,11 +27,19 @@ class PhotoGallery {
 		const formSearch = this.appBox.querySelector('#search-form');
 		const topics = this.appBox.querySelectorAll('.topic');
 		const authorsData = this.appBox.querySelectorAll('.author-data');
+		const loadMoreButton = this.appBox.querySelector('#load-more');
 
-		formSearch.addEventListener('submit', this.getSearch.bind(this));
+		// formSearch.addEventListener('submit', this.getSearch.bind(this));
+		formSearch.addEventListener('submit', this.getQueryResults.bind(this));
+
 		this.appBox.addEventListener('click', this.doBiggerImage.bind(this));
 		this.appBox.addEventListener('click', this.getUserProfile.bind(this));
 
+		if (loadMoreButton) {
+			loadMoreButton.addEventListener('click', this.getSearch.bind(this));
+		}
+
+		//todo: no tiene mucho sentido tenes dos listeners a lo mismo, tendria que tener uno solo, que se fije de donde viene el click y te mande a la fn que precisas ejecutar
 		this.observeLoadMore();
 
 		topics.forEach(topic => {
@@ -115,13 +124,16 @@ class PhotoGallery {
 
 	getSearch(e) {
 		e.preventDefault();
+
 		const input = this.appBox.querySelector('#input');
 		const photoGrid = this.appBox.querySelector('#photo-grid');
 		const topic = e.currentTarget.dataset.slug;
+		const buttonID = e.currentTarget.id;
+
 		let query = {};
 		let pageNumber = this.pageNumber || 1;
 
-		pageNumber = 1;
+		// pageNumber = 1;
 		query = {
 			'per_page': 8,
 			'page': pageNumber,
@@ -129,6 +141,8 @@ class PhotoGallery {
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
+
+
 		this.insertType = 'innerHTML';
 		this.pageNumber = pageNumber;
 
@@ -136,11 +150,20 @@ class PhotoGallery {
 			query.id_or_slug = topic;
 			photoGrid.dataset.query = topic;
 			this.setFetch(`/topics/${topic}`, query);
+		} else if (buttonID) {
+			query.query = photoGrid.dataset.query;
+			query.page = ++pageNumber,
+				query.per_page = 21,
+				this.insertType = 'append';
+			this.showMoreResults = false;
+			this.pageNumber = query.page;
 		} else {
-			query.query = input.value;
 			photoGrid.dataset.query = input.value;
-			this.setFetch('/search', query);
+			query.query = input.value;
 		}
+
+		this.setFetch('/search', query);
+
 	}
 
 	getUserProfile(e) {
@@ -153,12 +176,29 @@ class PhotoGallery {
 			username = e.target.parentNode.dataset.username;
 		}
 
-		window.location.href = `users.php?username=${username}`;
+		window.location.href = `${this.BASE_URL}/users/${username}`;
+	}
 
-		// const formData = new FormData();
-		// formData.append('username', `/${username}`);
+	getQueryResults(e) {
+		e.preventDefault();
 
-		// this.callAPI('/users', this.displayUserPage.bind(this), formData);
+		const input = this.appBox.querySelector('#input');
+		const photoGrid = this.appBox.querySelector('#photo-grid');
+		let query = {};
+
+		query = {
+			'page': 1,
+			'per_page': 21,
+			'orientation': photoGrid.dataset.orientation || 'landscape',
+			'order_by': photoGrid.dataset.orderBy || 'latest',
+			// 'color': photoGrid.dataset.color,
+		}
+
+		let queryString = Object.entries(query).map(([key, value]) => {
+			return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+		}).join('&');
+
+		window.location.href = `${this.BASE_URL}/search/${input.value}/?${queryString}`;
 	}
 
 	setFetch(endpoint, query) {
@@ -169,12 +209,8 @@ class PhotoGallery {
 		this.callAPI('search', this.displayGrid.bind(this), formData);
 	}
 
-	displayUserPage(data) {
-		const userGridBox = this.appBox.querySelector('#user-container');
-		userGridBox.innerHTML = data.html;
-	}
-
 	displayGrid(data) {
+		const photoWrapper = this.appBox.querySelector('.photo-grid-wrapper');
 		const photoGrid = this.appBox.querySelector('#photo-grid');
 		const moreResults = this.appBox.querySelector('#more-results');
 
@@ -182,21 +218,22 @@ class PhotoGallery {
 			moreResults.style.display = 'none';
 			photoGrid.classList.add('not-found');
 		} else {
-			moreResults.style.display = 'block';
+			if (this.showMoreResults) {
+				moreResults.style.display = 'block';
+			}
 			photoGrid.classList.remove('not-found');
 		}
 
 		switch (this.insertType) {
 			case 'append':
-				photoGrid.innerHTML += data.html;
+				photoGrid.innerHTML += data.title + data.html;
 				break;
 
 			case 'innerHTML':
-				photoGrid.innerHTML = data.html;
+				photoGrid.innerHTML = data.title + data.html;
 				break;
 		}
 	}
-
 
 	callAPI(endpoint, callback, data = {}) {
 		const requestsOptions = {
@@ -204,7 +241,7 @@ class PhotoGallery {
 			body: data,
 		}
 
-		const myFetch = `./endpoints/${endpoint}.php`
+		const myFetch = `${this.BASE_URL}/endpoints/${endpoint}.php`
 		fetch(myFetch, requestsOptions)
 			.then((response) => {
 				if (response.status != '200') {

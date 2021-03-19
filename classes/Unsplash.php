@@ -115,6 +115,10 @@ class Unsplash {
 		$this->user_info = $user_info;
 		$this->user_photos = $user_photos;
 
+	public function fetch_query() {
+		$results_photos = $this->unsplash_api->get('/search/photos', $_GET);
+		$this->results_photos = $results_photos;
+		$this->query = $_GET;
 	}
 }
 
