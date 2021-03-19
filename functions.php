@@ -2,6 +2,8 @@
 
 require('./classes/Unsplash.php');
 $unsplash = new Unsplash();
+define('PATH', dirname(__FILE__));
+define('BASE_URL', $_SERVER['REQUEST_SCHEME']. '://'. $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']) . '/');
 
 function show_topics() {
 	global $unsplash;
