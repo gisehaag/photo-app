@@ -15,8 +15,8 @@ if ( $havent_query && $havent_endpoint ) {
 
 $default_query = array(
 	'per_page'		=> 8,
+	'query'			=> $query['query'],
 );
-
 
 $merged_query = array_merge($default_query, $query);
 $search = $unsplash->get($endpoint . '/photos', $merged_query);
@@ -42,7 +42,7 @@ switch (count($results)) {
 		$text = "<h1>those are the results</h1>" . display_results($results);
 		break;
 	default:
-		$title = "<p class=\"left-align title\">Here's the resuls for <span class=\"color-text\"> {$query['query']} </span>search</p>";
+		// $title = "<p class=\"left-align title\">Here's the resuls for <span class=\"color-text\"> {$query['query']} </span>search</p>";
 		$text = display_results($results);
 		break;
 }

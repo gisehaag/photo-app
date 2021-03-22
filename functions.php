@@ -23,7 +23,7 @@ function show_topics() {
 
 function show_slider() {
 	global $unsplash;
-	$slider = $unsplash->slider;
+	$slider = $unsplash->fetch_slider();
 
 	//todo: hacer dinamica la seleccion de esas imagenes destacadas
 	// creo que usando el data stored podría ser una manera de resolverlo
@@ -52,7 +52,7 @@ function show_slider() {
 
 function show_grid() {
 	global $unsplash;
-	$grid = $unsplash->grid;
+	$grid = $unsplash->fetch_grid();
 	//todo: colorear resultados según el día de la semana
 	// creo que usando el data stored podría ser una manera de resolverlo
 	if($grid) {
@@ -136,7 +136,6 @@ function show_results() {
 	$query = $unsplash->query['query'];
 
 	$total = $results_photos->total;
-	$total_pages = $results_photos->total_pages;
 	$photos = $results_photos->results; ?>
 
 	<p class="left-align title">Here's the resuls for <span class="color-text"><?php echo $query; ?> </span>search</p>
