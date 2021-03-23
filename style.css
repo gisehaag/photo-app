@@ -21,6 +21,11 @@ header h1 {
 	margin: 10px 0;
 }
 
+.app-box p,
+.app-box h1 {
+	margin: 0;
+}
+
 .title {
 	width: 80%;
 	margin: 0 auto;
@@ -231,6 +236,10 @@ header h1 {
 	padding: 15px;
 	padding-left: 30px;
 	font-size: 0.85rem;
+}
+
+.author-info p {
+	margin: 10px;
 }
 
 .author-info .icon {
