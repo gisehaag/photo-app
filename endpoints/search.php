@@ -13,21 +13,41 @@ if ( $havent_query && $havent_endpoint ) {
 	die();
 }
 
-$default_query = array(
-	'per_page'		=> 8,
-	'query'			=> $query['query'],
-);
+$default_query = [];
+$search_word = '';
+$topic = '';
+
+if(isset($query['query'])) {
+	$search_word = $query['query'];
+}
+
+if ($havent_query) {
+	$default_query = array(
+		'per_page'		=> 9,
+		'id_or_slug'	=> $query['id_or_slug'],
+	);
+	$topic = $query['id_or_slug'];
+}
+
+if($havent_endpoint) {
+	$default_query = array(
+		'per_page'		=> 8,
+		'query'			=> $query['query'],
+	);
+}
 
 $merged_query = array_merge($default_query, $query);
 $search = $unsplash->get($endpoint . '/photos', $merged_query);
-
 $search_string = json_encode($search);
+
 
 if( isset($search->results) ) {
 	$results = $search->results;
 } else {
 	$results = $search;
 }
+
+// var_dump($results); // trae ok los 8 resultados del topic
 
 $found = true;
 $title = "";
@@ -39,10 +59,11 @@ switch (count($results)) {
 		$title = "<h1>Sorry, I don't found any results</h1>";
 		break;
 	case 8:
-		$text = "<h1>those are the results</h1>" . display_results($results);
+		$text = "<h1>those are the results</h1>";
+		$text = display_results($results);
 		break;
 	default:
-		// $title = "<p class=\"left-align title\">Here's the resuls for <span class=\"color-text\"> {$query['query']} </span>search</p>";
+		$title = "<h1>Here's the resuls for <span class=\"color-text\"> {$topic} </span></h1>";
 		$text = display_results($results);
 		break;
 }
@@ -67,7 +88,9 @@ function display_results($results)
 }
 
 echo json_encode(array(
-	'found' 	=> $found,
-	'title'  => $title,
-	'html' 	=> $text,
+	'found' 			=> $found,
+	'title'  		=> $title,
+	'html' 			=> $text,
+	'topic'			=> $topic,
+	'search_word' 	=> $search_word,
 ));

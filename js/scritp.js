@@ -1,20 +1,32 @@
-$(function () {
-	$(".gallery").owlCarousel({
-		center: true,
-		items: 2,
-		loop: true,
-		margin: 0,
-		dots: false,
-		responsive: {
-			0: {
-				items: 1
-			},
-			600: {
-				items: 2
-			},
-		}
-	});
-})
+class PhotoGallery {
+	constructor() {
+		this.appBox = document.querySelector('.app-box');
+		this.BASE_URL = window.location.origin;
+		this.addEvents();
+		this.initSlider();
+		this.initMacy();
+	}
+
+	initSlider() {
+		// librery documentation http://owlcarousel2.github.io/OwlCarousel2/docs/started-welcome.html
+		$(function () {
+			$(".gallery").owlCarousel({
+				center: true,
+				items: 2,
+				loop: true,
+				margin: 0,
+				dots: false,
+				responsive: {
+					0: {
+						items: 1
+					},
+					600: {
+						items: 2
+					},
+				}
+			});
+		})
+	}
 
 	initMacy() {
 		// librery documentation https://github.com/bigbite/macy.js
@@ -26,7 +38,7 @@ $(function () {
 				margin: {
 					x: 15,
 					y: 15
-	}
+				}
 			});
 		}
 	}
@@ -121,7 +133,7 @@ $(function () {
 			'per_page': 9,
 			'page': ++pageNumber,
 			'query': photoGrid.dataset.query,
-			'orientation': photoGrid.dataset.orientation,
+			// 'orientation': photoGrid.dataset.orientation,
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
@@ -132,7 +144,7 @@ $(function () {
 
 	getSearch(e) {
 		e.preventDefault();
-
+		const title = this.appBox.querySelector('h1, .title');
 		const input = this.appBox.querySelector('#input');
 		const photoGrid = this.appBox.querySelector('#photo-grid');
 		const topic = e.currentTarget.dataset.slug;
@@ -143,13 +155,12 @@ $(function () {
 
 		// pageNumber = 1;
 		query = {
-			'per_page': 8,
+			// 'per_page': 8,
 			'page': pageNumber,
 			// 'orientation': photoGrid.dataset.orientation,
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
-
 
 		this.insertType = 'innerHTML';
 		this.pageNumber = pageNumber;
@@ -158,6 +169,7 @@ $(function () {
 			query.id_or_slug = topic;
 			photoGrid.dataset.query = topic;
 			this.setFetch(`/topics/${topic}`, query);
+			title.scrollIntoView({ behavior: "smooth" });
 		} else if (buttonID) {
 			query.query = photoGrid.dataset.query;
 			query.page = ++pageNumber,
@@ -165,13 +177,11 @@ $(function () {
 				this.insertType = 'append';
 			this.showMoreResults = false;
 			this.pageNumber = query.page;
+			this.setFetch('/search', query);
 		} else {
 			photoGrid.dataset.query = input.value;
 			query.query = input.value;
 		}
-
-		this.setFetch('/search', query);
-
 	}
 
 	getUserProfile(e) {
@@ -219,8 +229,10 @@ $(function () {
 
 	displayGrid(data) {
 		const photoWrapper = this.appBox.querySelector('.photo-grid-wrapper');
+		const title = this.appBox.querySelector('.highline');
 		const photoGrid = this.appBox.querySelector('#photo-grid');
 		const moreResults = this.appBox.querySelector('#more-results');
+
 
 		if (!data.found) {
 			moreResults.style.display = 'none';
@@ -234,18 +246,23 @@ $(function () {
 
 		switch (this.insertType) {
 			case 'append':
-				photoGrid.innerHTML += data.title + data.html;
+				photoGrid.innerHTML += data.html;
 				break;
 
 			case 'innerHTML':
-				photoGrid.innerHTML = data.title + data.html;
+				title.innerHTML = data.title;
+				photoGrid.innerHTML = data.html;
 				break;
 		}
+
 		if (this.macy) {
 			this.macy.runOnImageLoad(() => {
 				this.macy.recalculate(true);
 			}, true);
 		}
+
+		title.setAttribute("data-topic", data.topic);
+		title.setAttribute("data-search", data.search_word);
 	}
 
 	callAPI(endpoint, callback, data = {}) {

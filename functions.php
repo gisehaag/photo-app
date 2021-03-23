@@ -110,7 +110,7 @@ function show_profile() {
 			<?php endif; ?>
 		</div>
 	</div>
-	<div class="photo-grid user-grid-box">
+	<div class="photo-grid user-grid-box" id="photo-grid">
 		<h1>these are <?php echo $user_info->first_name; ?>'s photos</h1>
 		<?php foreach ($user_photos as $item) : ?>
 			<div class="grid-item-box">
@@ -123,7 +123,7 @@ function show_profile() {
 
 function show_results() {
 	global $unsplash;
-	$results_photos = $unsplash->results_photos;
+	$results_photos = $unsplash->fetch_query();
 
 	if(isset($unsplash->query['order_by']) ) {
 		$order = $unsplash->query['order_by'];
@@ -134,12 +134,13 @@ function show_results() {
 	}
 
 	$query = $unsplash->query['query'];
-
 	$total = $results_photos->total;
 	$photos = $results_photos->results; ?>
 
-	<p class="left-align title">Here's the resuls for <span class="color-text"><?php echo $query; ?> </span>search</p>
-  	<h1 class="left-align title"><?php echo $total; ?> photos found...</h1>
+	<div class="highline title left-align">
+		<p>Here's the resuls for <span class="color-text"><?php echo $query; ?> </span>search</p>
+		<h1><?php echo $total; ?> photos found...</h1>
+	</div>
 	<div class="photo-grid user-grid-box"
 
 		<?php if(isset($unsplash->query['order_by']) ) : ?>

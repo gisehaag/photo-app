@@ -16,12 +16,13 @@
 		</form>
 	</div>
 
-	<div class="photo-grid-wrapper">
-		<h1 class="title left-align">Featured photos of the week: <span class="color-text"><?php echo $unsplash->defaults['query']; ?></span></h1>
+	<div class="photo-grid-wrapper" >
+		<div class="highline title left-align">
+			<h1>Featured photos of the week <span class="color-text"><?php echo $unsplash->defaults['query']; ?></span></h1>
+		</div>
 		<div
 			class="photo-grid"
 			data-color="<?php echo $unsplash->defaults['color']; ?>"
-			data-orientation="<?php echo $unsplash->defaults['orientation']; ?>"
 			data-query="<?php echo $unsplash->defaults['query']; ?>"
 			data-order-by="<?php echo $unsplash->defaults['order_by']; ?>"
 			id="photo-grid"
