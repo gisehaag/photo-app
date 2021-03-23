@@ -15,6 +15,10 @@ class Unsplash_API {
 
 	private function save_to_file($endpoint, $decode_response, $params) {
 		$file_name = $this->get_file_name($endpoint, $params);
+		$dirname = dirname($file_name);
+		if(!is_dir($dirname)) {
+			mkdir($dirname);
+		}
 		file_put_contents( $file_name, json_encode($decode_response));
 	}
 
