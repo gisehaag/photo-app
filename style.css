@@ -155,9 +155,9 @@ header h1 {
 .photo-grid {
 	width: 80%;
 	margin: 30px auto;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 20px 10px;
+	/* display: grid; */
+	/* grid-template-columns: repeat(3, 1fr); */
+	/* gap: 20px 10px; */
 	position: relative;
 	z-index: 1;
 }

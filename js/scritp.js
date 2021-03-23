@@ -16,11 +16,19 @@ $(function () {
 	});
 })
 
-class PhotoGallery {
-	constructor() {
-		this.appBox = document.querySelector('.app-box');
-		this.BASE_URL = window.location.origin;
-		this.addEvents();
+	initMacy() {
+		// librery documentation https://github.com/bigbite/macy.js
+		if (window.outerWidth > 780) {
+			this.macy = Macy({
+				// See below for all available options.
+				container: '#photo-grid',
+				columns: 3,
+				margin: {
+					x: 15,
+					y: 15
+	}
+			});
+		}
 	}
 
 	addEvents() {
@@ -137,7 +145,7 @@ class PhotoGallery {
 		query = {
 			'per_page': 8,
 			'page': pageNumber,
-			'orientation': photoGrid.dataset.orientation,
+			// 'orientation': photoGrid.dataset.orientation,
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
@@ -232,6 +240,11 @@ class PhotoGallery {
 			case 'innerHTML':
 				photoGrid.innerHTML = data.title + data.html;
 				break;
+		}
+		if (this.macy) {
+			this.macy.runOnImageLoad(() => {
+				this.macy.recalculate(true);
+			}, true);
 		}
 	}
 

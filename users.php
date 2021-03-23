@@ -15,7 +15,6 @@
 	<div
 		class="photo-grid"
 		data-color="<?php echo $unsplash->defaults['color']; ?>"
-		data-orientation="<?php echo $unsplash->defaults['orientation']; ?>"
 		data-query="<?php echo $unsplash->defaults['query']; ?>"
 		data-order-by="<?php echo $unsplash->defaults['order_by']; ?>"
 		id="photo-grid"

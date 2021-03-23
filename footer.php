@@ -10,6 +10,8 @@
 			integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
 			crossorigin="anonymous"
 		></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 		<script src="https://test.gisehaag.com/assets/js/footer.js"></script>
 		<script src="<?php echo BASE_URL . 'js/scritp.js'; ?>"></script>
 	</body>

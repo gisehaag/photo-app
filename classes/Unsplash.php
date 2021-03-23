@@ -33,7 +33,7 @@ class Unsplash {
 
 		$this->defaults = array(
 			'color'			=> 'blue',
-			'orientation' 	=> 'landscape',
+			// 'orientation' 	=> 'landscape',
 			'query'			=> 'milkyway',
 			'order_by'		=> 'relevant',
 		);
@@ -62,7 +62,7 @@ class Unsplash {
 	public function fetch_slider() {
 		$slider = $this->unsplash_api->get("/topics/$this->daily_topic/photos", array(
 			'id_or_slug'  => $this->daily_topic,
-			'orientation' => 'landscape',
+			// 'orientation' => 'landscape',
 			'per_page'    => 3,
 			'order_by'    => 'popular',
 		));
@@ -79,7 +79,7 @@ class Unsplash {
 			'query'			=> $this->defaults['query'],
 			'order_by'		=> $this->defaults['order_by'],
 			'color'			=> $this->defaults['color'],
-			'orientation' 	=> $this->defaults['orientation'],
+			// 'orientation' 	=> $this->defaults['orientation'],
 		));
 
 		if(! isset($grid->error)) {
@@ -101,8 +101,8 @@ class Unsplash {
 
 	public function fetch_query() {
 		$results_photos = $this->unsplash_api->get('/search/photos', $_GET);
-		$this->results_photos = $results_photos;
 		$this->query = $_GET;
+		return $results_photos;
 	}
 }
 
