@@ -63,9 +63,10 @@ class Unsplash {
 		$slider = $this->unsplash_api->get("/topics/$this->daily_topic/photos", array(
 			'id_or_slug'  => $this->daily_topic,
 			// 'orientation' => 'landscape',
-			'per_page'    => 3,
+			'per_page'    => 21,
 			'order_by'    => 'popular',
 		));
+
 
 		if(! isset($slider['error'])) {
 			return $slider;

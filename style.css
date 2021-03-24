@@ -10,6 +10,7 @@ body {
 	margin: 0px;
 	text-align: center;
 	color: #454555;
+	background: linear-gradient(#fff, #aaaabc);
 }
 
 a {
@@ -17,8 +18,31 @@ a {
 	text-decoration: none;
 }
 
-header h1 {
-	margin: 10px 0;
+.header-wrapper {
+	text-align: left;
+	margin: 20px 0 0 20px;
+	color: #666;
+	width: 90%;
+	margin: 30px auto 40px;
+}
+
+.flex {
+	display: flex;
+	align-items: center;
+}
+
+.header-wrapper p {
+	margin: 0;
+}
+
+.header-wrapper h1 {
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.icon-camera-retro {
+	font-size: 4.3rem;
+	margin-right: 15px;
 }
 
 .app-box p,
@@ -39,21 +63,22 @@ header h1 {
 	color: #8aa1ff;
 }
 
-.menu,
+.menu {
+	margin: auto 10px;
+}
+
 .user-container,
 .results-container {
-	padding: 30px 0;
-	background: linear-gradient(#fff, #aaaabc);
-	border-bottom: 4px #aaaabc solid;
+	margin: 30px auto 10px;
 }
 
 .topic-list {
 	display: flex;
 	position: relative;
 	overflow: auto;
-	width: 80%;
-	margin: 0 auto;
+	width: 100%;
 	padding: 0;
+	margin: 20px auto 10px;
 }
 
 .topic-list div {
@@ -151,18 +176,13 @@ header h1 {
 
 .search-box {
 	width: 100%;
-	margin: 0 auto;
-	padding: 40px 0 80px;
-	border-top: 3px #aaaabc solid;
-	background: linear-gradient(#aaaabc, #fff);
+	margin: 40px auto;
+	padding: 0;
 }
 
 .photo-grid {
-	width: 80%;
+	width: 90%;
 	margin: 30px auto;
-	/* display: grid; */
-	/* grid-template-columns: repeat(3, 1fr); */
-	/* gap: 20px 10px; */
 	position: relative;
 	z-index: 1;
 }
@@ -214,6 +234,7 @@ header h1 {
 
 .user-container .author-image {
 	margin-left: 40px;
+	border-radius: 10px;
 }
 
 .user-container .author-data {
@@ -297,12 +318,11 @@ header h1 {
 .modal {
 	display: none;
 	position: fixed;
-	top: 0;
+	top: 30px;
 	z-index: 2;
 	place-items: center;
 	width: 100vw;
-	height: 100vh;
-	/* overflow: auto; */
+	height: 85vh;
 }
 
 .modal-bg {
@@ -317,11 +337,12 @@ header h1 {
 .modal-container {
 	position: relative;
 	max-width: 80vw;
-	margin: 0 auto;
+	margin: auto;
 }
 
 .modal-container img {
 	max-width: 100%;
+	max-height: 85vh;
 }
 
 .modal-container a {
@@ -345,6 +366,32 @@ header h1 {
 		width: 80vw;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.grid-item-box {
+		margin-bottom: 20px;
+	}
+
+	.header-wrapper {
+		font-size: 0.8em;
+	}
+
+	.author-info {
+		width: 100%;
+		overflow-wrap: break-word;
+	}
+
+	.user-container .author-data {
+		flex-direction: column;
+		width: 90vw;
+	}
+
+	.author-info p {
+		margin: 10px 0px;
+	}
+
+	.user-container .author-image {
+		margin: 40px 0 0;
 	}
 
 	.modal-container {

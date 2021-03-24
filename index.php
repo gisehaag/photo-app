@@ -3,6 +3,7 @@
 	<div class="menu">
 		<div class="topic-list"><?php show_topics(); ?></div>
 	</div>
+
 	<div class="gallery owl-carousel owl-theme">
 		<?php show_slider(); ?>
 	</div>
