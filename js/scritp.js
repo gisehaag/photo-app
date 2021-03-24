@@ -8,7 +8,7 @@ class PhotoGallery {
 	}
 
 	initSlider() {
-		// librery documentation http://owlcarousel2.github.io/OwlCarousel2/docs/started-welcome.html
+		// library documentation http://owlcarousel2.github.io/OwlCarousel2/docs/started-welcome.html
 		$(function () {
 			$(".gallery").owlCarousel({
 				center: true,
@@ -29,7 +29,7 @@ class PhotoGallery {
 	}
 
 	initMacy() {
-		// librery documentation https://github.com/bigbite/macy.js
+		// library documentation https://github.com/bigbite/macy.js
 		if (window.outerWidth > 780) {
 			this.macy = Macy({
 				// See below for all available options.
@@ -46,25 +46,24 @@ class PhotoGallery {
 	addEvents() {
 		const formSearch = this.appBox.querySelector('#search-form');
 		const topics = this.appBox.querySelectorAll('.topic');
-		const authorsData = this.appBox.querySelectorAll('.author-data');
 		const loadMoreButton = this.appBox.querySelector('#load-more');
 
-		// formSearch.addEventListener('submit', this.getSearch.bind(this));
 		formSearch.addEventListener('submit', this.getQueryResults.bind(this));
 
-		this.appBox.addEventListener('click', this.doBiggerImage.bind(this));
-		this.appBox.addEventListener('click', this.getUserProfile.bind(this));
+		this.appBox.addEventListener('click', (e) => {
+			this.doBiggerImage(e);
+			this.getUserProfile(e);
+		});
 
 		if (loadMoreButton) {
 			loadMoreButton.addEventListener('click', this.getSearch.bind(this));
-		}
-
-		//todo: no tiene mucho sentido tenes dos listeners a lo mismo, tendria que tener uno solo, que se fije de donde viene el click y te mande a la fn que precisas ejecutar
-		this.observeLoadMore();
+		};
 
 		topics.forEach(topic => {
 			topic.addEventListener('click', this.getSearch.bind(this));
-		})
+		});
+
+		this.observeLoadMore();
 	}
 
 	doBiggerImage(e) {
