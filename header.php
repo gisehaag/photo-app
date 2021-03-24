@@ -24,10 +24,17 @@
 		<title>Photo Gallery</title>
 	</head>
 	<body>
-		<header>
+		<header class="header-wrapper flex">
 			<a href="/">
-				<h1>Photo Gallery</h1>
+				<span class="icon-camera-retro"></span>
 			</a>
+				<div>
+						<h1 class="">My photo gallery app</h1>
+					<p>Here's a wide source of freely-usable images.</p>
+					<p class="text">You can use those images for all propose and it is free, you can check the license
+						<a class="color-text" href=" https://unsplash.com/license" target="_blank">here</a>. </p>
+					<p class="text">This app is using the <a class="color-text" href="https://unsplash.com/documentation" target="_blank">Unsplash API</a>.</p>
+				</div>
 		</header>
 		<div class="modal"></div>
 		<div class="app-box">
