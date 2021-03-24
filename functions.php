@@ -11,7 +11,6 @@ function show_topics() {
 	$topics = $unsplash->topics;
 	// todo: ver qué hago con los href
 
-
 	if($topics) {
 		foreach ($topics as $item) : ?>
 			<div class="topic" data-slug="<?php echo $item->slug; ?>"><a href="#photo-grid"><?php echo $item->title; ?></a></div>
@@ -60,7 +59,7 @@ function show_grid() {
 			<div class="grid-item-box">
 				<img
 				class="photo"
-						src="<?php echo $item->urls->small; ?>"
+						src="<?php echo $item->urls->regular; ?>"
 						alt="<?php echo $item->alt_description; ?>"
 					/>
 					<span class="caption"><?php echo $item->alt_description; ?></span>
