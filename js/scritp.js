@@ -132,7 +132,6 @@ class PhotoGallery {
 			'per_page': 9,
 			'page': ++pageNumber,
 			'query': photoGrid.dataset.query,
-			// 'orientation': photoGrid.dataset.orientation,
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
@@ -152,11 +151,8 @@ class PhotoGallery {
 		let query = {};
 		let pageNumber = this.pageNumber || 1;
 
-		// pageNumber = 1;
 		query = {
-			// 'per_page': 8,
 			'page': pageNumber,
-			// 'orientation': photoGrid.dataset.orientation,
 			// 'color': photoGrid.dataset.color,
 			'order_by': photoGrid.dataset.orderBy,
 		}
@@ -206,7 +202,6 @@ class PhotoGallery {
 		query = {
 			'page': 1,
 			'per_page': 21,
-			'orientation': photoGrid.dataset.orientation || 'landscape',
 			'order_by': photoGrid.dataset.orderBy || 'latest',
 			// 'color': photoGrid.dataset.color,
 		}

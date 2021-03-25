@@ -7,9 +7,7 @@ define('BASE_URL', $_SERVER['REQUEST_SCHEME']. '://'. $_SERVER['SERVER_NAME'] . 
 
 function show_topics() {
 	global $unsplash;
-
 	$topics = $unsplash->topics;
-	// todo: ver qué hago con los href
 
 	if($topics) {
 		foreach ($topics as $item) : ?>
@@ -24,8 +22,6 @@ function show_slider() {
 	global $unsplash;
 	$slider = $unsplash->fetch_slider();
 
-	//todo: hacer dinamica la seleccion de esas imagenes destacadas
-	// creo que usando el data stored podría ser una manera de resolverlo
 	if($slider) {
 		foreach ($slider as $item) : ?>
 			<div class="galleryData-item">
@@ -52,8 +48,7 @@ function show_slider() {
 function show_grid() {
 	global $unsplash;
 	$grid = $unsplash->fetch_grid();
-	//todo: colorear resultados según el día de la semana
-	// creo que usando el data stored podría ser una manera de resolverlo
+
 	if($grid) {
 		foreach ($grid as $item) : ?>
 			<div class="grid-item-box">
@@ -80,7 +75,6 @@ function show_grid() {
 
 function show_profile() {
 	global $unsplash;
-
 	$user_info = $unsplash->user_info;
 	$user_photos = $unsplash->user_photos; ?>
 
@@ -113,7 +107,7 @@ function show_profile() {
 		<h1>these are <?php echo $user_info->first_name; ?>'s photos</h1>
 		<?php foreach ($user_photos as $item) : ?>
 			<div class="grid-item-box">
-				<img class="photo" src="<?php echo $item->urls->small; ?>" alt="<?php echo $item->alt_description; ?>" />
+				<img class="photo" src="<?php echo $item->urls->regular; ?>" alt="<?php echo $item->alt_description; ?>" />
 				<span class="caption"><?php echo $item->alt_description; ?></span>
 			</div>
 		<?php endforeach; ?>
@@ -128,10 +122,6 @@ function show_results() {
 		$order = $unsplash->query['order_by'];
 	}
 
-	if(isset($unsplash->query['orientation'])) {
-		$orientation = $unsplash->query['orientation'];
-	}
-
 	$query = $unsplash->query['query'];
 	$total = $results_photos->total;
 	$photos = $results_photos->results; ?>
@@ -141,22 +131,15 @@ function show_results() {
 		<h1><?php echo $total; ?> photos found...</h1>
 	</div>
 	<div class="photo-grid user-grid-box"
-
 		<?php if(isset($unsplash->query['order_by']) ) : ?>
 			data-order-by="<?php echo $order; ?>"
 		<?php endif;  ?>
-
 		data-color=""
-
-		<?php if(isset($unsplash->query['orientation']) ) : ?>
-			data-orientation="<?php echo$orientation; ?>"
-		<?php endif;  ?>
-
 		data-query="<?php echo $query; ?>" id="photo-grid">
 
 		<?php foreach ($photos as $item) : ?>
 			<div class="grid-item-box">
-				<img class="photo" src="<?php echo $item->urls->small; ?>" alt="<?php echo $item->alt_description; ?>" />
+				<img class="photo" src="<?php echo $item->urls->regular; ?>" alt="<?php echo $item->alt_description; ?>" />
 				<span class="caption"><?php echo $item->alt_description; ?></span>
 				<div class="author-data" data-username="<?php echo $item->user->username; ?>">
 					<img class="author-image small" src="<?php echo $item->user->profile_image->small; ?>" alt="<?php echo $item->user->name; ?>" />
