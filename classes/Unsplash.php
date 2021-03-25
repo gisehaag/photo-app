@@ -24,17 +24,17 @@ class Unsplash {
 	}
 
 	private function set_defaults() {
-
-		// todo: dinamic query
 		$colors = array('black', 'white', 'yellow', 'orange', 'red', 'purple', 'magenta', 'green', 'teal', 'blue');
-		$orientations = array('landscape', 'portrait', 'squarish');
+		$colors_index = rand(0, count($colors));
+
 		$order = array('relevant', 'latest');
-		$query = array('cactus', 'woman', 'milkyway', 'universe', 'blue sky', 'kitten', 'street', 'tuscany', 'landscape', 'london');
+
+		$query = array( 'cactus', 'woman', 'milkyway', 'universe', 'blue sky', 'kitten', 'street', 'tuscany', 'landscape', 'london');
+		$query_index = rand(0, count($query));
 
 		$this->defaults = array(
-			'color'			=> 'blue',
-			// 'orientation' 	=> 'landscape',
-			'query'			=> 'milkyway',
+			'color'			=> $colors[$colors_index],
+			'query'			=> $query[$query_index],
 			'order_by'		=> 'relevant',
 		);
 	}
@@ -62,7 +62,6 @@ class Unsplash {
 	public function fetch_slider() {
 		$slider = $this->unsplash_api->get("/topics/$this->daily_topic/photos", array(
 			'id_or_slug'  => $this->daily_topic,
-			// 'orientation' => 'landscape',
 			'per_page'    => 21,
 			'order_by'    => 'popular',
 		));
@@ -80,7 +79,6 @@ class Unsplash {
 			'query'			=> $this->defaults['query'],
 			'order_by'		=> $this->defaults['order_by'],
 			'color'			=> $this->defaults['color'],
-			// 'orientation' 	=> $this->defaults['orientation'],
 		));
 
 		if(! isset($grid->error)) {
