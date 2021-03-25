@@ -146,6 +146,7 @@ a {
 	right: 80px;
 	left: 80px;
 	transition: all 0.5s ease;
+	padding-top: 0;
 }
 
 .owl-item.center .author-data.info-gallery {
@@ -199,14 +200,14 @@ a {
 
 .photo-grid .grid-item-box {
 	border: 1px solid #aaaabc;
-	padding: 5px;
-	padding-bottom: 35px;
+	padding: 15px;
 	background-color: #fff;
 }
 
 .caption {
 	font-size: 0.6rem;
 	font-style: italic;
+	display: block;
 }
 
 .author-data {
@@ -214,6 +215,7 @@ a {
 	align-items: center;
 	justify-content: flex-start;
 	cursor: pointer;
+	padding-top: 15px;
 }
 
 .owl-item.center .author-data {
