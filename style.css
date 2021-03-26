@@ -249,11 +249,6 @@ a {
 	min-height: 270px;
 }
 
-/* .user-container a {
-	text-decoration: none;
-	color: #454555;
-} */
-
 .author-info {
 	text-align: left;
 	padding: 15px;
@@ -277,6 +272,12 @@ a {
 
 .photo-grid img {
 	max-width: 100%;
+}
+
+.photo-grid.user-grid-box h1 {
+	/* margin-bottom: 20px; */
+	/* padding-bottom: 30px; */
+	border-bottom: 30px solid transparent;
 }
 
 .search-box form {
