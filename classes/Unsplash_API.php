@@ -1,6 +1,5 @@
 <?php
-$dir = dirname( dirname(__FILE__) );
-require($dir.'/api-connect-data.php');
+require('./env.php');
 
 class Unsplash_API {
 	private $client_id;
