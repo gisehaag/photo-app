@@ -1,0 +1,6 @@
+RewriteEngine On
+# users/lo9096 => /users.php?username=lo9096
+RewriteRule ^users/([^/]*)/?$ ./users.php?username=$1
+
+# query/cat => /query.php?query=&query=cat&page=1&per_page=21&order_by=relevant
+RewriteRule ^search/([^/]*)?/?$ ./query.php?query=$1 [QSA]
